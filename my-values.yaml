@@ -12,11 +12,11 @@ general:
   pgid: 1000
   #Persistent storage selections and pathing
   storage:
-    customVolume: false  #set to true if not using a PVC (must provide volume below)
+    customVolume: true  #set to true if not using a PVC (must provide volume below)
     pvcName: mediaserver-pvc
     size: 5Gi
-    pvcStorageClass: ""
-    accessMode: ""
+    pvcStorageClass: "nfs-csi"
+    accessMode: "ReadWriteMany"
     # the path starting from the top level of the pv you're passing. If your share is server.local/share/, then tv is server.local/share/media/tv
     subPaths:
       tv: media/tv
@@ -25,11 +25,11 @@ general:
       transmission: transmission
       sabnzbd: sabnzbd
       config: config
-    volumes: {}
-    #  hostPath:
-    #    path: /mnt/share
+    volumes:
+      hostPath:
+        path: /srv/nfs
   ingress:
-    ingressClassName: ""
+    ingressClassName: "nginx"
 
 sonarr:
   enabled: true
@@ -233,7 +233,7 @@ prowlarr:
 
 plex:
   enabled: true
-  claim: "CHANGEME"
+  claim: "claim-2z7F_xP2F-xGwJT55c6u"
   replicaCount: 1
   container:
     image: docker.io/linuxserver/plex
